@@ -1,21 +1,14 @@
-import { createApp } from "vue";
-import PrimeVue from "primevue/config";
-import App from "./App.vue";
+import './assets/main.css'
 
-// Import PrimeVue theme
-import "primevue/resources/themes/aura-light-green/theme.css"; // or any other theme
-import "primevue/resources/primevue.min.css"; // core css
-import "primeicons/primeicons.css"; // icons
+import { createApp } from 'vue'
+import { createPinia } from 'pinia'
 
-// Import PrimeVue components
-// import Button from "primevue/button";
+import App from './App.vue'
+import router from './router'
 
-const app = createApp(App);
+const app = createApp(App)
 
-// Use PrimeVue plugin
-app.use(PrimeVue);
+app.use(createPinia())
+app.use(router)
 
-// Register PrimeVue components with multi-word names
-// app.component("PrimeButton", Button);
-
-app.mount("#app");
+app.mount('#app')
