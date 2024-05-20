@@ -3,6 +3,7 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 
 import Button from 'primevue/button'
+import InputText from 'primevue/inputtext'
 import PrimeVue from 'primevue/config'
 // import 'primevue/resources/themes/aura-light-green/theme.css'
 // import Lara from '@/presets/lara'
@@ -16,6 +17,7 @@ import router from './router'
 
 const app = createApp(App)
 app.component('Button', Button)
+app.component('InputText', InputText)
 app.use(createPinia())
 app.use(router)
 app.use(PrimeVue)
