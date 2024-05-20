@@ -12,6 +12,17 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    /** USER TYPES */
+    public const TYPE_ADMIN = 'ADMIN';
+    public const TYPE_USER = 'USER';
+
+
+    /** ALL USER TYPES */
+    public const ALL_USER_TYPES = [
+        self::TYPE_ADMIN,
+        self::TYPE_USER,
+    ];
+
     /**
      * The attributes that are mass assignable.
      *
@@ -21,6 +32,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'type',
+        'picture'
     ];
 
     /**
