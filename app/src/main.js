@@ -1,6 +1,7 @@
 import './assets/main.css'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
+import { useAuthStore } from './stores/auth'
 
 import Button from 'primevue/button'
 import InputText from 'primevue/inputtext'
@@ -21,5 +22,10 @@ app.component('InputText', InputText)
 app.use(createPinia())
 app.use(router)
 app.use(PrimeVue)
+
+const authStore = useAuthStore()
+if (authStore.token) {
+  authStore.fetchUser()
+}
 
 app.mount('#app')
