@@ -3,21 +3,25 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import { useAuthStore } from './stores/auth'
 
+import PrimeVue from 'primevue/config'
+import 'primevue/resources/primevue.min.css'
+
 import Button from 'primevue/button'
 import InputText from 'primevue/inputtext'
-import PrimeVue from 'primevue/config'
-// import 'primevue/resources/themes/aura-light-green/theme.css'
-// import Lara from '@/presets/lara'
+import Menubar from 'primevue/menubar'
+// import 'primevue/resources/themes/vela-blue/theme.css'
 
-import 'primevue/resources/themes/aura-light-green/theme.css'
-
+import 'primeicons/primeicons.css'
 import './assets/tailwind.css' // Import Tailwind CSS
 
 import App from './App.vue'
 import router from './router'
 
 const app = createApp(App)
+import 'primeicons/primeicons.css'
+
 app.component('Button', Button)
+app.component('Menubar', Menubar)
 app.component('InputText', InputText)
 app.use(createPinia())
 app.use(router)
