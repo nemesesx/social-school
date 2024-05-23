@@ -97,16 +97,23 @@ class AuthController extends Controller
         ]);
     }
 
+    /**
+     * profileUpdate
+     *
+     * @param  mixed $request
+     * @return void
+     */
     public function profileUpdate(UserProfileRequest $request)
     {
         $data = $request->all();
         $user = $request->user();
 
+        // Update User Picture If It's Present in Request Payload
         if ($request->hasFile('picture')) {
             $imageFile = $request->file('picture');
-            $filename = uniqid() . '.' . $imageFile->getClientOriginalExtension();
-            $path = $imageFile->storeAs('public/user/images', $filename);
-            $path = Storage::url($path);
+            $filename = uniqid() . '.' . $imageFile->getClientOriginalExtension(); //generate unique name for picture
+            $path = $imageFile->storeAs('public/user/images', $filename); //store file with generated unique name
+            $path = Storage::url($path);//get publicly accessible storage path for image
             $data['picture'] = $path;
         }
         $user->update( $data );
@@ -115,6 +122,16 @@ class AuthController extends Controller
         return response()->json([
             'message' => 'Profile Updated',
             'data' => UserResource::make($user),
+        ]);
+    }
+
+    public function getUserProfile(Request $request)
+    {
+        $user = $request->user();
+
+        return response()->json([
+            'message' => 'Profile Fetched',
+            'data' => UserResource::make($user->load('follows','followers')),
         ]);
     }
 }

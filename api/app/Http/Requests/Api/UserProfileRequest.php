@@ -28,6 +28,10 @@ class UserProfileRequest extends FormRequest
                 'nullable',
                 'image',
             ],
+            'bio' => [
+                'nullable',
+                'image',
+            ],
             'name' => [
                 'required',
                 'string',

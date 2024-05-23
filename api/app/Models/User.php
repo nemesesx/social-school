@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable
 {
@@ -35,7 +36,8 @@ class User extends Authenticatable
         'email',
         'password',
         'type',
-        'picture'
+        'picture',
+        'bio'
     ];
 
     /**
@@ -79,5 +81,72 @@ class User extends Authenticatable
             'user_id',
             'id',
         );
+    }
+
+    /**
+     * follows
+     *
+     * The users that this user follows.
+     *
+     * @return BelongsToMany
+     */
+    public function follows(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            User::class,
+            'user_follower',
+            'user_id',
+            'follower_id'
+        )->withTimestamps();
+    }
+
+    /**
+     * followers
+     *
+     * The users that follow this user.
+     *
+     * @return BelongsToMany
+     */
+    public function followers(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            User::class,
+            'user_follower',
+            'follower_id',
+            'user_id'
+        )->withTimestamps();
+    }
+
+    /**
+     * likedPosts
+     *
+     * The posts that the user has liked.
+     *
+     * @return BelongsToMany
+     */
+    public function likedPosts(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Post::class,
+            'post_user_like',
+            'user_id',
+            'post_id'
+        )->withTimestamps();
+    }
+
+    /**
+     * commentedPosts
+     *
+     * The posts that the user has commented on.
+     *
+     * @return BelongsToMany
+     */
+    public function commentedPosts(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Post::class,
+            'post_user_comment'
+        )->withPivot('comment','id')
+            ->withTimestamps();
     }
 }
