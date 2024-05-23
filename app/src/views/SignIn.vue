@@ -112,14 +112,13 @@ export default {
   },
   methods: {
     async login() {
-      debugger;
       const authStore = useAuthStore();
       await authStore.login({
         email: this.email,
         password: this.password,
       });
       if (authStore.token) {
-        this.$router.push({ name: "Dashboard" });
+        this.$router.push({ name: "" });
       }
     },
   },

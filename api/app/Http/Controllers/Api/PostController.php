@@ -18,7 +18,7 @@ class PostController extends Controller
      * @param  mixed $request
      * @return void
      */
-    public function create(PostRequest $request)
+    public function create(Request $request)
     {
         $data = $request->all();
         $user = $request->user();

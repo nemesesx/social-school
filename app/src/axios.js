@@ -2,11 +2,16 @@
 import axios from 'axios'
 import { useAuthStore } from './stores/auth'
 import router from './router'
+import { getActivePinia } from 'pinia'
 
 // Create an axios instance
 const axiosInstance = axios.create({
-  baseURL: 'http://127.0.0.1:8000', // Replace with your API base URL
-  timeout: 10000 // Optional timeout setting
+  baseURL: 'http://127.0.0.1:8001', // Replace with your API base URL
+  timeout: 10000, // Optional timeout setting
+  headers: {
+    Accept: 'application/json',
+    'Content-Type': 'application/json'
+  }
 })
 
 // Request interceptor to add auth token to headers

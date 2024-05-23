@@ -2,21 +2,71 @@
   <aside class="w-1/4 bg-white p-4">
     <div class="flex flex-col items-center">
       <img
+        v-if="user?.picture"
+        class="h-24 w-24 rounded-full"
+        :src="user.picture"
+        alt="User Image"
+      />
+
+      <img
+        v-else
+        class="h-24 w-24 rounded-full"
+        src="../assets/images/profile.png"
+        alt="User Image"
+      />
+      <!--  -->
+      <!-- <img
         class="h-24 w-24 rounded-full"
         src="https://via.placeholder.com/150"
         alt="User Image"
-      />
-      <h2 class="mt-2 text-xl font-semibold">User Name</h2>
+      /> -->
+      <h2 class="mt-2 text-xl font-semibold">{{ user?.name }}</h2>
       <div class="mt-4">
-        <p><strong>Followers:</strong> 1234</p>
-        <p><strong>Likes:</strong> 5678</p>
+        <p><strong>Followers:</strong> {{ user?.followers?.length }}</p>
+        <p><strong>Post:</strong> {{ totalPosts }}</p>
       </div>
     </div>
   </aside>
 </template>
 
 <script>
+import { useAuthStore } from "../stores/auth";
+import { usePostStore } from "../stores/postStore";
+
 export default {
-  name: "SideBar",
+  data() {
+    return {
+      user: null,
+      authStore: useAuthStore(),
+      postStore: usePostStore(),
+    };
+  },
+
+  created() {
+    this.getUserProfile();
+  },
+  methods: {
+    async getUserProfile() {
+      await this.authStore.getUserProfile();
+      this.user = this.authStore?.user;
+      console.log("sidebar:", this.user);
+    },
+    async login() {
+      const authStore = useAuthStore();
+      await authStore.login({
+        email: this.email,
+        password: this.password,
+      });
+      if (authStore.token) {
+        this.$router.push({ name: "" });
+      }
+    },
+  },
+
+  computed: {
+    totalPosts() {
+      return this.postStore?.posts?.length ?? 0;
+    },
+  },
 };
 </script>

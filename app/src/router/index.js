@@ -44,7 +44,7 @@ router.beforeEach((to, from, next) => {
   const authStore = useAuthStore()
 
   if (to.matched.some((record) => record.meta.requiresAuth) && !authStore.token) {
-    next({ name: 'Login' })
+    next({ name: 'Signin' })
   } else if (to.matched.some((record) => record.meta.guestOnly) && authStore.token) {
     next({ name: 'Home' })
   } else {

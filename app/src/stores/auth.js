@@ -1,11 +1,12 @@
 // stores/auth.js
 import { defineStore } from 'pinia'
-import axios from 'axios'
-const baseURL = 'http://127.0.0.1:8000'
+import axios from '@/axios'
+const baseURL = 'http://127.0.0.1:8001'
 export const useAuthStore = defineStore('auth', {
   state: () => ({
     token: localStorage.getItem('token') || null,
-    user: null
+    user: null,
+    postCount: 0
   }),
   actions: {
     async register(user) {
@@ -22,26 +23,33 @@ export const useAuthStore = defineStore('auth', {
     async login(credentials) {
       try {
         const response = await axios.post(`${baseURL}/api/login`, credentials)
-        this.token = response.data.token
+        this.token = response.data.authorization.token
         localStorage.setItem('token', this.token)
+        // this.$router.push({ name: 'Home' })
         // await this.fetchUser()
       } catch (error) {
         console.error('Failed to login:', error)
       }
     },
     async fetchUser() {
-      if (this.token) {
-        try {
-          const response = await axios.get('/api/user', {
-            headers: {
-              Authorization: `Bearer ${this.token}`
-            }
-          })
-          this.user = response.data
-        } catch (error) {
-          console.error('Failed to fetch user:', error)
-        }
-      }
+      // if (this.token) {
+      //   try {
+      //     const response = await axios.get('/api/user', {
+      //       // headers: {
+      //       //   Authorization: `Bearer ${this.token}`
+      //       // }
+      //     })
+      //     this.user = response.data
+      //   } catch (error) {
+      //     console.error('Failed to fetch user:', error)
+      //   }
+      // }
+    },
+
+    async getPostCount() {
+      await axios.get(`${baseURL}/api/post/self`)
+      this.posts = this.posts.filter((post) => post.id !== id)
+      this.fetchNewsFeed()
     },
     async logout() {
       try {
@@ -57,6 +65,13 @@ export const useAuthStore = defineStore('auth', {
       } catch (error) {
         console.error('Failed to logout:', error)
       }
+    },
+
+    async getUserProfile() {
+      const user = await axios.get(`${baseURL}/api/get/profile`)
+
+      this.user = user?.data?.data
+      console.log('user:', this.user)
     }
   }
 })
