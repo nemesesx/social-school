@@ -118,7 +118,7 @@ export default {
         password: this.password,
       });
       if (authStore.token) {
-        this.$router.push({ name: "" });
+        this.$router.push({ name: "Home" });
       }
     },
   },

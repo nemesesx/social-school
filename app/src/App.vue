@@ -1,5 +1,5 @@
 <template>
-  <Navbar />
+  <Navbar v-if="authStore?.token" />
   <!-- <Layout></Layout> -->
 
   <RouterView />
@@ -18,6 +18,12 @@ export default {
     return {
       authStore: useAuthStore(),
     };
+  },
+
+  methods: {
+    isLoggedIn() {
+      return this.authStore.token ? true : false;
+    },
   },
 };
 </script>

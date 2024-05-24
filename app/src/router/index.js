@@ -16,8 +16,7 @@ const router = createRouter({
     {
       path: '/signin',
       name: 'Signin',
-      component: SignIn,
-      meta: { guestOnly: true }
+      component: SignIn
     },
 
     {

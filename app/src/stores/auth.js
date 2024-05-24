@@ -69,9 +69,7 @@ export const useAuthStore = defineStore('auth', {
 
     async getUserProfile() {
       const user = await axios.get(`${baseURL}/api/get/profile`)
-
       this.user = user?.data?.data
-      console.log('user:', this.user)
     }
   }
 })

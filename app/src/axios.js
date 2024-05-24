@@ -3,6 +3,12 @@ import axios from 'axios'
 import { useAuthStore } from './stores/auth'
 import router from './router'
 import { getActivePinia } from 'pinia'
+import { createApp } from 'vue'
+import Spinner from './components/Spinner.vue'
+
+const app = createApp({})
+const spinnerInstance = app.component('Spinner', Spinner)
+const spinner = app.mount(document.createElement('div'))
 
 // Create an axios instance
 const axiosInstance = axios.create({
@@ -17,6 +23,7 @@ const axiosInstance = axios.create({
 // Request interceptor to add auth token to headers
 axiosInstance.interceptors.request.use(
   (config) => {
+    spinner.loading = true
     const authStore = useAuthStore()
     if (authStore.token) {
       config.headers.Authorization = `Bearer ${authStore.token}`
@@ -24,14 +31,20 @@ axiosInstance.interceptors.request.use(
     return config
   },
   (error) => {
+    // spinner.loading = false
     return Promise.reject(error)
   }
 )
 
 // Response interceptor to handle errors globally
 axiosInstance.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    // spinner.loading = false
+    return response
+  },
   (error) => {
+    // spinner.loading = false
+
     const authStore = useAuthStore()
     if (error.response && error.response.status === 401) {
       // Logout the user if the token is invalid or expired

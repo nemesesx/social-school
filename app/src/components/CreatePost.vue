@@ -1,5 +1,5 @@
 <template>
-  <main class="max-w-3xl mx-auto p-4">
+  <!-- <main class="max-w-3xl mx-auto p-4">
     <div class="bg-white p-4 rounded-lg shadow-lg">
       <textarea
         v-model="description"
@@ -27,7 +27,53 @@
         </button>
       </div>
     </div>
-  </main>
+  </main> -->
+
+  <form action="" class="create-post">
+    <div class="profile-photo">
+      <img src="../assets/images/profile-1.jpg" />
+    </div>
+    <input type="text" placeholder="What's on your mind, Diana ?" id="create-post" />
+
+    <!-- <div>
+        <FileUpload
+          mode="basic"
+          name="demo"
+          url="/api/upload"
+          accept="image/*"
+          :maxFileSize="1000000"
+          @upload="onUpload"
+        /> -->
+
+    <!-- <input
+        type="file"
+        class="hidden"
+        id="file-upload"
+        @change="onFileChange"
+        accept="image/*"
+      />
+
+      <div>
+        <i
+          for="file-upload"
+          class="pi pi-upload hover:cursor-pointer"
+          style="font-size: 1rem"
+        ></i>
+      </div> -->
+    <!-- <label for="file-upload" class="cursor-pointer text-blue-500 hover:text-blue-700"
+        >Attach Image</label
+      > -->
+    <!-- </div> -->
+    <!-- <textarea
+      v-model="description"
+      class="w-full p-2 border rounded-md"
+      rows="4"
+      placeholder="What's on your mind?"
+    ></textarea> -->
+    <div>
+      <input type="submit" value="Post" class="btn btn-primary" />
+    </div>
+  </form>
 </template>
 
 <script>

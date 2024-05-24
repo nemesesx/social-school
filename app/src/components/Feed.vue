@@ -1,8 +1,8 @@
 <template>
-  <div class="feed-container">
-    <CreatePost @postCreated="fetchPosts" />
-    <PostsList :posts="posts" />
-  </div>
+  <!-- <div class="feed-container"> -->
+  <CreatePost @postCreated="fetchPosts" />
+  <PostsList :posts="posts" />
+  <!-- </div> -->
 </template>
 
 <script>
