@@ -20,9 +20,11 @@ class UserResource extends JsonResource
             'email' => $this->email,
             'type' => $this->type,
             'bio' => $this->bio,
+            'banned' => $this->banned,
             'picture' => empty($this->picture) ? $this->picture : url($this->picture),
             'follows' => UserResource::collection($this->whenLoaded('follows')),
             'followers' => UserResource::collection($this->whenLoaded('followers')),
+            'posts' => UserResource::collection($this->whenLoaded('posts')),
         ];
     }
 }

@@ -37,7 +37,8 @@ class User extends Authenticatable
         'password',
         'type',
         'picture',
-        'bio'
+        'bio',
+        'banned'
     ];
 
     /**

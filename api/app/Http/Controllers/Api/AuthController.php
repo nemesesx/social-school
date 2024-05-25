@@ -61,6 +61,14 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
 
             $user = Auth::user();
+
+            //Return error if user is banned
+            if ( $user->banned) {
+                return response()->json([
+                    'message' => 'Account Banned',
+                ], 401);
+            }
+
             $token = $user->createToken('authToken')->plainTextToken;
 
             //Return JSON response

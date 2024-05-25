@@ -44,7 +44,42 @@ class UserController extends Controller
 
         return response()->json([
             'message' => 'User Fetched',
-            'data' => UserResource::make($user),
+            'data' => UserResource::make($user->load('posts')),
+        ]);
+    }
+
+    /**
+     * getSuggestedUser
+     *
+     * Return suggested user (follows of authenticated user follows)
+     *
+     * @param  mixed $request
+     * @return void
+     */
+    public function getSuggestedUser(Request $request)
+    {
+        $user = $request->user();
+
+        // Get the IDs of users the authenticated user follows
+        $followedUserIds = $user->follows()->pluck('users.id');
+
+        // Get the follows of the users the authenticated user follows
+        $suggestedUserIds = User::whereIn('id', $followedUserIds)
+            ->with('follows')
+            ->get()
+            ->pluck('follows.*.id')
+            ->flatten()
+            ->unique()
+            ->diff([$user->id, ...$followedUserIds])
+            ->shuffle()
+            ->take(5);
+
+        // Fetch the suggested users
+        $suggestedUsers = User::whereIn('id', $suggestedUserIds)->get();
+
+        return response()->json([
+            'message' => 'Suggested Users Fetched',
+            'data' => UserResource::collection($suggestedUsers),
         ]);
     }
 
