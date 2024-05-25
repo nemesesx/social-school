@@ -1,7 +1,5 @@
 <template>
   <Navbar v-if="authStore?.token" />
-  <!-- <Layout></Layout> -->
-
   <RouterView />
 </template>
 <script>

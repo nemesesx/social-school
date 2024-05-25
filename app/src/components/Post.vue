@@ -26,8 +26,12 @@
           <span @click="onLikeClick" :key="liked">
             <i class="pi" :class="liked ? 'pi-heart-fill' : 'pi-heart'" style=""></i>
           </span>
-          <span>
-            <i class="pi pi-comments" style=""></i>
+
+          <span @click="toggleCreateCommentVisible">
+            <i
+              class="pi"
+              :class="createCommentVisible ? 'pi-comment' : 'pi-comments'"
+            ></i>
           </span>
         </div>
       </div>
@@ -49,7 +53,17 @@
         </p>
       </div>
 
-      <div class="comments text-muted">View all 50 comments</div>
+      <div
+        v-if="post?.comments?.length"
+        class="comments text-muted"
+        @click="toggleCommentsVisible"
+      >
+        View all {{ post?.comments?.length }} comments
+      </div>
+
+      <CreateComment v-if="createCommentVisible" :postId="post.id" />
+
+      <Comments v-if="commentsVisible" :comments="post.comments"></Comments>
     </div>
   </div>
 </template>
@@ -57,21 +71,46 @@
 <script>
 import { usePostStore } from "../stores/postStore";
 import { useAuthStore } from "../stores/authStore";
-
+import Comments from "../components/Comments.vue";
+import CreateComment from "../components/CreateComment.vue";
 export default {
   name: "Post",
   props: {
     post: Object,
   },
+
+  components: {
+    Comments,
+    CreateComment,
+  },
+
   data() {
     return {
       commentsVisible: false,
+      createCommentVisible: false,
       newComment: "",
       postStore: usePostStore(),
       authStore: useAuthStore(),
       userId: this.authStore?.user?.id,
       postData: JSON.parse(JSON.stringify(this.post)),
       liked: this.isLiked(),
+      comments: [
+        {
+          author: "Test",
+          content: "sadsafa dfsafas",
+          id: 1,
+        },
+        {
+          author: "Test",
+          content: "sadsafa dfsafas",
+          id: 1,
+        },
+        {
+          author: "Test",
+          content: "sadsafa dfsafas",
+          id: 1,
+        },
+      ],
     };
   },
 
@@ -108,6 +147,10 @@ export default {
 
     toggleCommentsVisible() {
       this.commentsVisible = !this.commentsVisible;
+    },
+
+    toggleCreateCommentVisible() {
+      this.createCommentVisible = !this.createCommentVisible;
     },
 
     async addComment() {
