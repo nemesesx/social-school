@@ -1,5 +1,5 @@
 <template>
-  <div v-for="post in posts" :key="post.id" class="post-item">
+  <div v-for="post in posts" :key="post.id + posts.length" class="post-item">
     <Post :post="post" />
   </div>
 </template>
@@ -19,9 +19,7 @@ export default {
     return {};
   },
 
-  created() {
-    // debugger;
-  },
+  created() {},
 
   methods: {
     // async fetchPosts() {

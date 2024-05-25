@@ -52,7 +52,6 @@ export default {
     },
 
     async createPost() {
-      // debugger;
       const formData = new FormData();
       formData.append("description", this.description);
       if (this.image) {

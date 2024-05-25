@@ -23,8 +23,8 @@
 
       <div class="action-buttons">
         <div class="interaction-buttons ml-2">
-          <span>
-            <i class="pi" :class="isLiked ? 'pi-heart-fill' : 'pi-heart'" style=""></i>
+          <span @click="onLikeClick" :key="liked">
+            <i class="pi" :class="liked ? 'pi-heart-fill' : 'pi-heart'" style=""></i>
           </span>
           <span>
             <i class="pi pi-comments" style=""></i>
@@ -69,42 +69,41 @@ export default {
       newComment: "",
       postStore: usePostStore(),
       authStore: useAuthStore(),
+      userId: this.authStore?.user?.id,
+      postData: JSON.parse(JSON.stringify(this.post)),
+      liked: this.isLiked(),
     };
   },
 
   mounted() {
-    console.log("post:", this.post);
+    console.log("post:", this.postData);
   },
 
-  computed: {
-    isLiked() {
-      // debugger;
-
-      console.log("this.post.likes.some", this.post.likes.some);
-
-      console.log(
-        "test",
-        this.post.likes.some((id) => id === this.authStore?.user?.id)
-      );
-
-      // return this.post.likes.some((id) => id === this.authStore?.user?.id);
-      return true;
-    },
-  },
+  computed: {},
   methods: {
-    onLikeClick() {
-      if (this.post.likes.id === this.auth.user.id) {
+    isLiked() {
+      return this.postData?.likes?.some((user) => {
+        return +user.id === +this.userId;
+      });
+    },
+    async onLikeClick() {
+      if (this.liked) {
         this.unlikePost();
       } else {
         this.likePost();
       }
     },
     async likePost() {
-      await this.postStore.likePost(post?.id);
+      await this.postStore.likePost(this.post?.id);
+
+      // this.postData = this.postData?.likes?.push(this.authStore?.user);
+      this.liked = true;
     },
 
     async unlikePost() {
-      await this.postStore.unlikePost(post?.id);
+      await this.postStore.unLikePost(this.post?.id);
+      // this.postData = this.postData?.likes?.filter((user) => user?.id !== this.userId);
+      this.liked = false;
     },
 
     toggleCommentsVisible() {
@@ -138,4 +137,8 @@ export default {
 
 <style scoped>
 /* Add your scoped styles here */
+
+.pi-heart-fill {
+  color: red;
+}
 </style>
