@@ -7,7 +7,7 @@
 <script>
 import Navbar from "../src/components/Navbar.vue";
 import { RouterLink, RouterView } from "vue-router";
-import { useAuthStore } from "../src/stores/auth";
+import { useAuthStore } from "../src/stores/authStore";
 
 export default {
   name: "App",

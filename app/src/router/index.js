@@ -3,7 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import SignIn from '../views/SignIn.vue'
 import SignUp from '../views/SignUp.vue'
 import NotFound from '../views/NotFound.vue'
-import { useAuthStore } from '../stores/auth'
+import { useAuthStore } from '../stores/authStore'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -25,6 +25,7 @@ const router = createRouter({
       component: SignUp,
       meta: { guestOnly: true }
     },
+
     {
       path: '/about',
       name: 'about',

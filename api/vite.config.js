@@ -1,7 +1,9 @@
 import { defineConfig } from "vite";
 import laravel from "laravel-vite-plugin";
 import path from "path";
+import dotenv from "dotenv";
 
+dotenv.config(); // load env vars from .env
 export default defineConfig({
     plugins: [
         laravel({

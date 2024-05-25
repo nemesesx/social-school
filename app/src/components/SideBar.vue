@@ -29,8 +29,8 @@
         src="https://via.placeholder.com/150"
         alt="User Image"
       /> -->
-        <h2 class="mt-2 text-xl font-semibold">{{ user?.name }}</h2>
-        <div class="mt-4">
+        <h2 class="mt-2 p-2 text-xl font-semibold">{{ user?.name }}</h2>
+        <div class="mt-4 flex justify-between items-between p-2">
           <p><strong>Followers:</strong> {{ user?.followers?.length }}</p>
           <p><strong>Post:</strong> {{ totalPosts }}</p>
         </div>
@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import { useAuthStore } from "../stores/auth";
+import { useAuthStore } from "../stores/authStore";
 import { usePostStore } from "../stores/postStore";
 
 export default {

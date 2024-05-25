@@ -2,7 +2,7 @@
 import { defineStore } from 'pinia'
 // import axios from 'axios'
 import axios from '@/axios'
-const baseURL = 'http://127.0.0.1:8001'
+const baseURL = import.meta.env.VITE_APP_API_URL
 
 export const usePostStore = defineStore('post', {
   state: () => ({

@@ -12,9 +12,9 @@
             <small>{{ post?.created_at }}</small>
           </div>
         </div>
-        <span class="edit">
+        <!-- <span class="edit">
           <i class="uil uil-ellipsis-h"></i>
-        </span>
+        </span> -->
       </div>
 
       <div class="photo">
@@ -22,9 +22,13 @@
       </div>
 
       <div class="action-buttons">
-        <div class="interaction-buttons">
-          <span><i class="uil uil-heart"></i></span>
-          <span><i class="uil uil-comment-dots"></i></span>
+        <div class="interaction-buttons ml-2">
+          <span>
+            <i class="pi" :class="isLiked ? 'pi-heart-fill' : 'pi-heart'" style=""></i>
+          </span>
+          <span>
+            <i class="pi pi-comments" style=""></i>
+          </span>
         </div>
       </div>
 
@@ -52,6 +56,7 @@
 
 <script>
 import { usePostStore } from "../stores/postStore";
+import { useAuthStore } from "../stores/authStore";
 
 export default {
   name: "Post",
@@ -63,13 +68,43 @@ export default {
       commentsVisible: false,
       newComment: "",
       postStore: usePostStore(),
+      authStore: useAuthStore(),
     };
   },
 
-  mounted() {},
+  mounted() {
+    console.log("post:", this.post);
+  },
+
+  computed: {
+    isLiked() {
+      // debugger;
+
+      console.log("this.post.likes.some", this.post.likes.some);
+
+      console.log(
+        "test",
+        this.post.likes.some((id) => id === this.authStore?.user?.id)
+      );
+
+      // return this.post.likes.some((id) => id === this.authStore?.user?.id);
+      return true;
+    },
+  },
   methods: {
-    async likePost(id) {
-      await this.postStore.likePost(id);
+    onLikeClick() {
+      if (this.post.likes.id === this.auth.user.id) {
+        this.unlikePost();
+      } else {
+        this.likePost();
+      }
+    },
+    async likePost() {
+      await this.postStore.likePost(post?.id);
+    },
+
+    async unlikePost() {
+      await this.postStore.unlikePost(post?.id);
     },
 
     toggleCommentsVisible() {

@@ -41,7 +41,7 @@
 <script>
 import { computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { useAuthStore } from "../stores/auth";
+import { useAuthStore } from "../stores/authStore";
 import Menubar from "primevue/menubar";
 
 export default {

@@ -1,6 +1,6 @@
 // axios.js
 import axios from 'axios'
-import { useAuthStore } from './stores/auth'
+import { useAuthStore } from './stores/authStore'
 import router from './router'
 import { getActivePinia } from 'pinia'
 import { createApp } from 'vue'
@@ -11,8 +11,10 @@ const spinnerInstance = app.component('Spinner', Spinner)
 const spinner = app.mount(document.createElement('div'))
 
 // Create an axios instance
+const baseURL = import.meta.env.VITE_API_URL
+
 const axiosInstance = axios.create({
-  baseURL: 'http://127.0.0.1:8001', // Replace with your API base URL
+  baseURL: baseURL, // Replace with your API base URL
   timeout: 10000, // Optional timeout setting
   headers: {
     Accept: 'application/json',

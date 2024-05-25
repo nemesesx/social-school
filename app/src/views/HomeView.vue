@@ -35,7 +35,7 @@
 import Sidebar from "../components/SideBar.vue";
 import Feed from "../components/Feed.vue";
 import Suggestions from "../components/Suggestions.vue";
-import { useAuthStore } from "../stores/auth";
+import { useAuthStore } from "../stores/authStore";
 
 export default {
   name: "App",
