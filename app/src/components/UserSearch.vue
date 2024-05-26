@@ -47,7 +47,7 @@ export default {
   },
 
   mounted() {
-    console.log("users:", this.users);
+    // console.log("users:", this.users);
   },
 
   computed: {

@@ -13,6 +13,7 @@ import Button from 'primevue/button'
 import InputText from 'primevue/inputtext'
 import ProgressSpinner from 'primevue/progressspinner'
 import FileUpload from 'primevue/fileupload'
+import ToggleButton from 'primevue/togglebutton'
 
 import Menubar from 'primevue/menubar'
 // import 'primevue/resources/themes/vela-blue/theme.css'
@@ -32,6 +33,7 @@ app.component('Menubar', Menubar)
 app.component('InputText', InputText)
 app.component('ProgressSpinner', ProgressSpinner)
 app.component('FileUpload', FileUpload)
+app.component('ToggleButton', ToggleButton)
 
 app.use(createPinia())
 app.use(router)

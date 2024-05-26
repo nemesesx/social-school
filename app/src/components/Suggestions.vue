@@ -50,7 +50,6 @@ export default {
     async getSuggestedUsers() {
       await this.authStore.getSuggestedUsers();
       this.suggestedUsers = this.authStore?.suggestedUsers;
-      console.log(this.suggestedUsers);
     },
   },
 };
