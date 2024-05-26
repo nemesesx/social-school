@@ -1,11 +1,14 @@
 <template>
-  <div v-for="post in posts" :key="post.id + posts.length" class="post-item">
-    <Post :post="post" />
-  </div>
+  <template v-if="posts?.length">
+    <div v-for="post in posts" :key="post.id + posts.length" class="post-item">
+      <Post @updateRecord="onUpdateRecord" :post="post" />
+    </div>
+  </template>
+  <RecordNotFound />
 </template>
 
 <script>
-// import CreatePost from "../components/CreatePost.vue";
+import RecordNotFound from "../components/RecordNotFound.vue";
 import Post from "../components/Post.vue";
 import { usePostStore } from "../stores/postStore";
 
@@ -33,6 +36,7 @@ export default {
   },
   components: {
     Post,
+    RecordNotFound,
   },
 };
 </script>

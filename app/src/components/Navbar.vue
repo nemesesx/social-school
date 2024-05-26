@@ -4,7 +4,14 @@
       <h1 class="logo">Social School</h1>
       <div class="search-bar">
         <i class="uil uil-search"></i>
-        <input type="search" placeholder="Search user" />
+        <input
+          v-model="searchQuery"
+          type="search"
+          placeholder="Search Users"
+          @input="onInput"
+          @click="onCross()"
+        />
+        <UserSearch @hide="isOpen = false" :users="searchResults" :isOpen="isOpen" />
       </div>
       <div class="create">
         <!-- <label class="btn btn-primary" for="create-post">Create</label> -->
@@ -43,17 +50,27 @@ import { computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useAuthStore } from "../stores/authStore";
 import Menubar from "primevue/menubar";
-
+import UserSearch from "../components//UserSearch.vue";
+import debounce from "lodash/debounce";
 export default {
   name: "Navbar",
 
+  components: {
+    UserSearch,
+  },
   data() {
     return {
+      isOpen: false,
+      searchResults: [],
       isDropdownVisible: false,
       authStore: useAuthStore(),
       searchQuery: null,
-      searchResults: [],
       authStore: useAuthStore(),
+      users: [
+        { id: 1, name: "John Doe", image: "https://via.placeholder.com/30" },
+        { id: 2, name: "Jane Smith", image: "https://via.placeholder.com/30" },
+        { id: 3, name: "Alice Johnson", image: "https://via.placeholder.com/30" },
+      ],
     };
   },
 
@@ -64,6 +81,29 @@ export default {
   },
 
   methods: {
+    onCross() {
+      this.toggleIsOpen();
+    },
+    toggleIsOpen() {
+      this.isOpen = !this.isOpen;
+    },
+    async searchUsers(searchQuery) {
+      await this.authStore.searchUsers(searchQuery);
+      this.searchResults = this.authStore?.searchResults || [];
+      this.isOpen = true;
+      console.log("searchResults:", this.searchResults);
+    },
+    onInput() {
+      this.debouncedSearch(this.searchQuery);
+    },
+    debouncedSearch: debounce(function (searchQuery) {
+      if (searchQuery?.trim() === "") {
+        this.searchResults = [];
+        return;
+      }
+      this.searchUsers(searchQuery);
+    }, 300),
+
     toggleDropdown() {
       this.isDropdownVisible = !this.isDropdownVisible;
     },
@@ -72,8 +112,6 @@ export default {
       this.$router.push({ name: "Signin" });
       await this.authStore.logout();
     },
-
-    searchQuery() {},
 
     handleNotificationClick() {
       // Handle notification click logic

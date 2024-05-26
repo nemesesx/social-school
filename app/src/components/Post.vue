@@ -73,6 +73,8 @@ import { usePostStore } from "../stores/postStore";
 import { useAuthStore } from "../stores/authStore";
 import Comments from "../components/Comments.vue";
 import CreateComment from "../components/CreateComment.vue";
+
+import PubSub from "pubsub-js";
 export default {
   name: "Post",
   props: {
@@ -115,7 +117,7 @@ export default {
   },
 
   mounted() {
-    console.log("post:", this.postData);
+    // console.log("post:", this.postData);
   },
 
   computed: {},
@@ -131,6 +133,8 @@ export default {
       } else {
         this.likePost();
       }
+
+      PubSub.publish("updateRecord");
     },
     async likePost() {
       await this.postStore.likePost(this.post?.id);

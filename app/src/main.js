@@ -26,7 +26,7 @@ import router from './router'
 
 const app = createApp(App)
 import 'primeicons/primeicons.css'
-
+// import Toast, { POSITION } from 'vue-toastification'
 app.component('Button', Button)
 app.component('Menubar', Menubar)
 app.component('InputText', InputText)
@@ -42,4 +42,19 @@ if (authStore.token) {
   authStore.fetchUser()
 }
 
+// app.use(Toast, {
+//   position: POSITION.TOP_CENTER,
+//   timeout: 5000,
+//   hideProgressBar: true,
+//   closeOnClick: true,
+//   pauseOnFocusLoss: true,
+//   pauseOnHover: true,
+//   draggable: true,
+//   draggablePercent: 0.6,
+//   showCloseButtonOnHover: false,
+//   hideCloseButton: false,
+//   closeButton: 'button',
+//   icon: true,
+//   rtl: false
+// })
 app.mount('#app')

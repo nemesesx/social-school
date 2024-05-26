@@ -20,7 +20,7 @@
 
 <script>
 import { usePostStore } from "../stores/postStore";
-
+import PubSub from "pubsub-js";
 export default {
   name: "Navbar",
 
@@ -30,7 +30,7 @@ export default {
   data() {
     return {
       postStore: usePostStore(),
-      description: null,
+      comment: null,
       image: null,
     };
   },
@@ -39,6 +39,7 @@ export default {
     async addComment() {
       await this.postStore.addComment(this.postId, { comment: this.comment });
       this.resetForm();
+      PubSub.publish("updateRecord");
     },
     resetForm() {
       this.comment = "";

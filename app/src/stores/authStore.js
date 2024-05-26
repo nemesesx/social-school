@@ -7,7 +7,9 @@ export const useAuthStore = defineStore('auth', {
   state: () => ({
     token: localStorage.getItem('token') || null,
     user: null,
-    postCount: 0
+    postCount: 0,
+    suggestedUsers: [],
+    searchResults: []
   }),
   actions: {
     async register(user) {
@@ -71,6 +73,21 @@ export const useAuthStore = defineStore('auth', {
     async getUserProfile() {
       const user = await axios.get(`${baseURL}/api/get/profile`)
       this.user = user?.data?.data
+    },
+
+    async getSuggestedUsers() {
+      const suggestedUsers = await axios.get(`${baseURL}/api/get/user/suggested`)
+      this.suggestedUsers = suggestedUsers?.data?.data
+    },
+
+    async searchUsers(query) {
+      const searchResults = await axios.get(`${baseURL}/api/search/users/keyword=${query}`)
+      this.searchResults = searchResults?.data?.data || []
+    },
+
+    async followUser(id) {
+      await axios.get(`${baseURL}/api/follow/user/id=${id}`)
+      // this.searchResults = searchResults?.data?.data || []
     }
   }
 })

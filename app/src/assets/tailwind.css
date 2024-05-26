@@ -19,3 +19,33 @@
     display: none !important;
     visibility: hidden;
   } */
+
+
+  .Toastify__toast-container--top-right {
+    position: absolute !important;
+    top: 10px !important;
+    right: 10px !important;
+    z-index: 9999;
+  }
+  
+  /* Optional: Customize other positions if needed */
+  .Toastify__toast-container--top-left {
+    position: absolute !important;
+    top: 10px !important;
+    left: 10px !important;
+    z-index: 9999;
+  }
+  
+  .Toastify__toast-container--bottom-right {
+    position: absolute !important;
+    bottom: 10px !important;
+    right: 10px !important;
+    z-index: 9999;
+  }
+  
+  .Toastify__toast-container--bottom-left {
+    position: absolute !important;
+    bottom: 10px !important;
+    left: 10px !important;
+    z-index: 9999;
+  }
