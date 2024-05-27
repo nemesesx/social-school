@@ -9,7 +9,8 @@ export const useAuthStore = defineStore('auth', {
     user: null,
     postCount: 0,
     suggestedUsers: [],
-    searchResults: []
+    searchResults: [],
+    error: null
   }),
   actions: {
     async register(user) {
@@ -26,12 +27,16 @@ export const useAuthStore = defineStore('auth', {
     async login(credentials) {
       try {
         const response = await axios.post(`${baseURL}/api/login`, credentials)
+
+        console.log('response:', response)
         this.token = response.data.authorization.token
         localStorage.setItem('token', this.token)
         // this.$router.push({ name: 'Home' })
         // await this.fetchUser()
       } catch (error) {
-        console.error('Failed to login:', error)
+        this.error = error.response?.data?.errors
+        console.log('message:', error.response?.data?.message)
+        console.log('message:', error.response?.data?.errors)
       }
     },
     async fetchUser() {
