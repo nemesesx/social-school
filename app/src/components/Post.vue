@@ -24,7 +24,7 @@
       <div class="action-buttons">
         <div class="interaction-buttons ml-2">
           <span @click="onLikeClick" :key="liked">
-            <i class="pi" :class="liked ? 'pi-heart-fill' : 'pi-heart'" style=""></i>
+            <i class="pi" :class="isLiked ? 'pi-heart-fill' : 'pi-heart'" style=""></i>
           </span>
 
           <span @click="toggleCreateCommentVisible">
@@ -95,38 +95,23 @@ export default {
       authStore: useAuthStore(),
       userId: this.authStore?.user?.id,
       postData: JSON.parse(JSON.stringify(this.post)),
-      liked: this.isLiked(),
-      comments: [
-        {
-          author: "Test",
-          content: "sadsafa dfsafas",
-          id: 1,
-        },
-        {
-          author: "Test",
-          content: "sadsafa dfsafas",
-          id: 1,
-        },
-        {
-          author: "Test",
-          content: "sadsafa dfsafas",
-          id: 1,
-        },
-      ],
+      liked: this.isLiked,
     };
   },
 
   mounted() {
     // console.log("post:", this.postData);
+    this.liked = this.postData?.likes?.some((user) => {
+      return +user?.id == +this.authStore?.user?.id;
+    });
   },
 
-  computed: {},
-  methods: {
+  computed: {
     isLiked() {
-      return this.postData?.likes?.some((user) => {
-        return +user.id === +this.userId;
-      });
+      return this.liked;
     },
+  },
+  methods: {
     async onLikeClick() {
       if (this.liked) {
         this.unlikePost();

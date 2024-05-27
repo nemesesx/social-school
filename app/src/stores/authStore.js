@@ -28,15 +28,15 @@ export const useAuthStore = defineStore('auth', {
       try {
         const response = await axios.post(`${baseURL}/api/login`, credentials)
 
-        console.log('response:', response)
+        // console.log('response:', response)
         this.token = response.data.authorization.token
+        this.user = response.data.data
         localStorage.setItem('token', this.token)
+        console.log('res:', response.data.data)
         // this.$router.push({ name: 'Home' })
         // await this.fetchUser()
       } catch (error) {
         this.error = error.response?.data?.errors
-        console.log('message:', error.response?.data?.message)
-        console.log('message:', error.response?.data?.errors)
       }
     },
     async fetchUser() {

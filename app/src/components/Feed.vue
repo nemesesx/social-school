@@ -39,15 +39,14 @@ export default {
   },
   methods: {
     onUpdateRecord() {
-      debugger;
       this.fetchPosts();
       // this.toast.success("Comment added successfully");
-      Swal.fire({
-        icon: "success",
-        title: "Hello, world!",
-        text: "This is a SweetAlert modal dialog in Vue.js",
-        confirmButtonText: "OK",
-      });
+      // Swal.fire({
+      //   icon: "success",
+      //   title: "Hello, world!",
+      //   text: "This is a SweetAlert modal dialog in Vue.js",
+      //   confirmButtonText: "OK",
+      // });
     },
 
     async fetchPosts() {

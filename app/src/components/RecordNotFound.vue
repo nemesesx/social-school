@@ -7,28 +7,7 @@
 </template>
 
 <script>
-import { useAuthStore } from "../stores/authStore";
-
-export default {
-  data() {
-    return {
-      suggestedUsers: [],
-      authStore: useAuthStore(),
-    };
-  },
-
-  mounted() {
-    this.getSuggestedUsers();
-  },
-
-  methods: {
-    async getSuggestedUsers() {
-      await this.authStore.getSuggestedUsers();
-      this.suggestedUsers = this.authStore?.suggestedUsers;
-      console.log(this.suggestedUsers);
-    },
-  },
-};
+export default {};
 </script>
 
 <style scoped>

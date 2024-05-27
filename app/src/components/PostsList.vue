@@ -4,7 +4,7 @@
       <Post @updateRecord="onUpdateRecord" :post="post" />
     </div>
   </template>
-  <RecordNotFound />
+  <RecordNotFound v-else />
 </template>
 
 <script>
