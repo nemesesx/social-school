@@ -1,7 +1,12 @@
 <template>
   <nav>
     <div class="container">
-      <Link href="/"> <h1 class="logo">Social School</h1> </Link>
+      <h1
+        class="logo font-extrabold cursor-pointer rounded p-2 hover:bg-blue-500 hover:text-white"
+        @click="goToHomePage()"
+      >
+        Social School
+      </h1>
       <div class="search-bar">
         <i class="uil uil-search"></i>
         <input
@@ -16,7 +21,13 @@
       <div class="create">
         <!-- <label class="btn btn-primary" for="create-post">Create</label> -->
         <div class="profile-photo hover:cursor-pointer">
-          <img src="../assets/images/profile-1.jpg" alt="" @click="toggleDropdown" />
+          <img
+            v-if="authStore?.user?.picture"
+            :src="authStore?.user?.picture"
+            alt=""
+            @click="toggleDropdown"
+          />
+          <img src="../assets/images/profile.png" alt="" @click="toggleDropdown" />
           <!--------------- NOTIFICATION POPUP --------------->
           <div
             v-if="isDropdownVisible"
@@ -123,11 +134,6 @@ export default {
       authStore: useAuthStore(),
       searchQuery: null,
       authStore: useAuthStore(),
-      users: [
-        { id: 1, name: "John Doe", image: "https://via.placeholder.com/30" },
-        { id: 2, name: "Jane Smith", image: "https://via.placeholder.com/30" },
-        { id: 3, name: "Alice Johnson", image: "https://via.placeholder.com/30" },
-      ],
     };
   },
 
@@ -138,6 +144,9 @@ export default {
   },
 
   methods: {
+    goToHomePage() {
+      this.$router.push({ name: "Home" });
+    },
     onCross() {
       this.toggleIsOpen();
     },
@@ -176,10 +185,14 @@ export default {
     },
 
     handleProfileClick() {
+      this.toggleDropdown();
       this.$router.push({ name: "Profile" });
-      // Handle profile click logic
-      console.log("Profile clicked");
     },
   },
 };
 </script>
+
+<style>
+.logo {
+}
+</style>

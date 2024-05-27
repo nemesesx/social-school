@@ -20,7 +20,7 @@ export const useAuthStore = defineStore('auth', {
         localStorage.setItem('token', this.token)
         // await this.fetchUser()
       } catch (error) {
-        console.error('Failed to login:', error)
+        throw new Error(error)
       }
     },
 
@@ -28,15 +28,13 @@ export const useAuthStore = defineStore('auth', {
       try {
         const response = await axios.post(`${baseURL}/api/login`, credentials)
 
-        // console.log('response:', response)
         this.token = response.data.authorization.token
         this.user = response.data.data
         localStorage.setItem('token', this.token)
         console.log('res:', response.data.data)
-        // this.$router.push({ name: 'Home' })
-        // await this.fetchUser()
       } catch (error) {
-        this.error = error.response?.data?.errors
+        const errorMessage = error.response?.data?.message
+        throw new Error(errorMessage)
       }
     },
     async fetchUser() {

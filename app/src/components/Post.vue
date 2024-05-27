@@ -23,7 +23,11 @@
 
       <div class="action-buttons">
         <div class="interaction-buttons ml-2">
-          <span @click="onLikeClick" :key="liked">
+          <span v-if="isAdmin" @click="deletePost" :key="liked">
+            <i class="pi pi-trash" style=""></i>
+          </span>
+
+          <span v-if="!isAdmin" @click="onLikeClick" :key="liked">
             <i class="pi" :class="isLiked ? 'pi-heart-fill' : 'pi-heart'" style=""></i>
           </span>
 
@@ -49,7 +53,7 @@
         <p>
           <b>{{ post?.posted_by?.name }}</b>
           {{ post?.description }}
-          <span class="harsh-tag">#lifestyle</span>
+          <!-- <span class="harsh-tag">#lifestyle</span> -->
         </p>
       </div>
 
@@ -61,7 +65,7 @@
         View all {{ post?.comments?.length }} comments
       </div>
 
-      <CreateComment v-if="createCommentVisible" :postId="post.id" />
+      <CreateComment v-if="createCommentVisible && !isAdmin" :postId="post.id" />
 
       <Comments v-if="commentsVisible" :comments="post.comments"></Comments>
     </div>
@@ -79,6 +83,7 @@ export default {
   name: "Post",
   props: {
     post: Object,
+    isAdmin: Boolean,
   },
 
   components: {
@@ -160,8 +165,9 @@ export default {
       this.$emit("editPost", this.post);
     },
 
-    deletePost() {
-      this.$emit("deletePost", this.post?.id);
+    async deletePost() {
+      // this.$emit("deletePost", this.post?.id);
+      await this.adminStore.deletePost(this.post?.id);
     },
   },
 };

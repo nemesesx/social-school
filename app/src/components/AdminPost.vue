@@ -1,7 +1,7 @@
 <template>
   <template v-if="posts?.length">
     <div v-for="post in posts" :key="post.id + posts.length" class="post-item">
-      <Post :post="post" />
+      <Post :isAdmin="isAdmin" :post="post" />
     </div>
   </template>
   <RecordNotFound v-else />
@@ -11,29 +11,40 @@
 import RecordNotFound from "../components/RecordNotFound.vue";
 import Post from "../components/Post.vue";
 import { usePostStore } from "../stores/postStore";
+import { useAdminStore } from "../stores/adminStore";
+import { useAuthStore } from "../stores/authStore";
 
 export default {
   name: "PostList",
-  props: {
-    posts: Array,
-  },
+  props: {},
 
   data() {
-    return {};
+    return {
+      posts: [],
+      adminStore: useAdminStore(),
+      authStore: useAuthStore(),
+    };
   },
 
-  created() {},
+  created() {
+    this.getPosts();
+  },
 
   methods: {
-    // async fetchPosts() {
-    //   const feed = await this.postStore.fetchNewsFeed();
-    //   this.feed = feed?.data;
-    //   const myPosts = await this.postStore.fetchMyPosts();
-    //   this.myPosts = this.authStore.posts;
-    //   console.log("feed:", this.feed);
-    //   console.log("posts:", this.myPosts);
-    // },
+    async getPosts() {
+      const posts = await this.adminStore.getPosts();
+      this.posts = this.adminStore?.posts || [];
+    },
   },
+
+  computed: {
+    isAdmin() {
+      console.log("authStore:", this.authStore);
+      debugger;
+      return this.authStore?.user?.type === "ADMIN";
+    },
+  },
+
   components: {
     Post,
     RecordNotFound,

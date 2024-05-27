@@ -53,7 +53,7 @@
         <div
           class="flex flex-col items-center justify-center gap-1 border-r border-stroke px-4 dark:border-strokedark xsm:flex-row"
         >
-          <span class="font-semibold text-black dark:text-white">259</span>
+          <span class="font-semibold text-black dark:text-white">{{ totalPosts }}</span>
           <span class="text-sm">Posts</span>
         </div>
         <div
@@ -185,7 +185,7 @@
           >
         </li>
       </ul>
-      <Users />
+      <Users v-if="isAdmin" />
     </div>
   </div>
 </template>
@@ -205,6 +205,7 @@ export default {
 
   created() {
     this.getUserProfile();
+    this.getPosts();
   },
 
   components: {
@@ -216,6 +217,12 @@ export default {
       await this.authStore.getUserProfile();
       this.user = this.authStore?.user;
     },
+
+    async getPosts() {
+      await this.postStore.fetchMyPosts();
+      // this.user = this.authStore?.user;
+    },
+
     async login() {
       const authStore = useAuthStore();
       await authStore.login({
@@ -229,6 +236,9 @@ export default {
   },
 
   computed: {
+    isAdmin() {
+      return this.authStore.user?.type === "ADMIN";
+    },
     totalPosts() {
       return this.postStore?.posts?.length ?? 0;
     },

@@ -50,7 +50,7 @@ axiosInstance.interceptors.response.use(
     const authStore = useAuthStore()
     if (error.response && error.response.status === 401) {
       // Logout the user if the token is invalid or expired
-      authStore.logout()
+      // authStore.logout()
       router.push({ name: 'Signin' })
     }
     return Promise.reject(error)

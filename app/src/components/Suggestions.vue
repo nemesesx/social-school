@@ -56,4 +56,10 @@ export default {
 </script>
 <style scoped>
 /* Optional: Additional styles */
+
+.right {
+  height: max-content;
+  position: sticky;
+  top: var(--sticky-top-left);
+}
 </style>

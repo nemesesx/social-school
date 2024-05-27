@@ -31,11 +31,16 @@
                 >Your Name</label
               >
               <InputText
+                required
                 id="name"
                 v-model="name"
                 aria-describedby="username-help"
                 class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               />
+
+              <small class="mt-2 text-sm text-red-600">
+                {{ extractStringFromArray(error?.name) }}
+              </small>
             </div>
             <div>
               <label
@@ -49,6 +54,7 @@
                 aria-describedby="username-help"
                 class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               />
+              {{ errors["name"] }}
             </div>
             <div>
               <label
@@ -57,13 +63,20 @@
                 >Password</label
               >
               <InputText
+                required
                 id="password"
                 v-model="password"
                 aria-describedby="username-help"
                 class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               />
+              {{ extractStringFromArray(error?.name) }}
             </div>
 
+            <div>
+              <small class="mt-2 text-sm text-red-600">
+                {{ errorMessage }}
+              </small>
+            </div>
             <button
               type="submit"
               @click.prevent="register"
@@ -96,19 +109,40 @@ export default {
       name: "",
       email: "",
       password: "",
+      errors: "",
+      errorMessage: "",
     };
   },
   methods: {
     async register() {
-      const authStore = useAuthStore();
-      await authStore.register({
-        name: this.name,
-        email: this.email,
-        password: this.password,
-      });
-      if (authStore.token) {
-        this.$router.push({ name: "Home" });
+      try {
+        if (!this.name || !this.email || !this.password) {
+          this.errorMessage = "All fields are required.";
+          return;
+        }
+
+        const authStore = useAuthStore();
+        await authStore.register({
+          name: this.name,
+          email: this.email,
+          password: this.password,
+        });
+        if (authStore.token) {
+          this.$router.push({ name: "Home" });
+        }
+      } catch (error) {
+        console.log("errors:", error);
+        this.errorMessage = "Something went wrong.";
+
+        // console.log("error::", JSON.stringify(error));
       }
+    },
+
+    extractStringFromArray(array) {
+      if (Array.isArray(array) && array.length > 0) {
+        return array[0];
+      }
+      return "";
     },
   },
 };
