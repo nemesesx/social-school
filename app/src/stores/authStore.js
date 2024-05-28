@@ -1,6 +1,7 @@
 // stores/auth.js
 import { defineStore } from 'pinia'
 import axios from '@/axios'
+import { update } from 'lodash'
 const baseURL = import.meta.env.VITE_APP_API_URL
 
 export const useAuthStore = defineStore('auth', {
@@ -76,6 +77,14 @@ export const useAuthStore = defineStore('auth', {
     async getUserProfile() {
       const user = await axios.get(`${baseURL}/api/get/profile`)
       this.user = user?.data?.data
+    },
+
+    async updateUserProfile(userData) {
+      const res = await axios.post(`${baseURL}/api/update/profile`, userData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
     },
 
     async getSuggestedUsers() {
