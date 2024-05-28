@@ -9,6 +9,7 @@ import formkitConfig from '../formkit.config'
 import PrimeVue from 'primevue/config'
 import 'primevue/resources/primevue.min.css'
 
+import Spinner from './components/Spinner.vue'
 import Button from 'primevue/button'
 import InputText from 'primevue/inputtext'
 import ProgressSpinner from 'primevue/progressspinner'
@@ -26,6 +27,7 @@ import App from './App.vue'
 import router from './router'
 
 const app = createApp(App)
+const pinia = createPinia()
 import 'primeicons/primeicons.css'
 // import Toast, { POSITION } from 'vue-toastification'
 app.component('Button', Button)
@@ -34,6 +36,7 @@ app.component('InputText', InputText)
 app.component('ProgressSpinner', ProgressSpinner)
 app.component('FileUpload', FileUpload)
 app.component('ToggleButton', ToggleButton)
+app.component('Spinner', Spinner)
 
 app.use(createPinia())
 app.use(router)
@@ -60,3 +63,7 @@ if (authStore.token) {
 //   rtl: false
 // })
 app.mount('#app')
+
+const spinnerApp = createApp(Spinner)
+const spinnerInstance = spinnerApp.use(pinia).mount(document.createElement('div'))
+document.body.appendChild(spinnerInstance.$el)

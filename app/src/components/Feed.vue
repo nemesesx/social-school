@@ -1,6 +1,7 @@
 <template>
   <!-- <div class="feed-container"> -->
   <CreatePost @postCreated="fetchPosts" />
+  <Spinner />
   <PostsList @updateRecord="onUpdateRecord" :posts="posts" />
   <!-- </div> -->
 </template>
@@ -9,6 +10,7 @@
 import CreatePost from "../components/CreatePost.vue";
 import PostsList from "../components/PostsList.vue";
 import { usePostStore } from "../stores/postStore";
+import Spinner from "../components/Spinner.vue";
 import PubSub from "pubsub-js";
 import { useToast } from "vue-toastification";
 import Swal from "sweetalert2";
@@ -17,6 +19,7 @@ export default {
   components: {
     CreatePost,
     PostsList,
+    Spinner,
   },
 
   data() {

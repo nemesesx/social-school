@@ -1,36 +1,47 @@
+<!-- Spinner.vue -->
 <template>
-  <div
-    v-if="loading"
-    class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-50"
-  >
-    <ProgressSpinner />
+  <div v-if="loading" class="spinner-overlay">
+    <div class="spinner"></div>
   </div>
 </template>
 
 <script>
+import { useSpinnerStore } from "../stores/spinnerStore";
+import { mapState } from "pinia";
 export default {
-  data() {
-    return {
-      loading: false,
-    };
-  },
-  mounted() {
-    console.log("spinner");
+  computed: {
+    ...mapState(useSpinnerStore, ["loading"]),
   },
 };
 </script>
 
 <style scoped>
-.fixed {
+.spinner-overlay {
   position: fixed;
-}
-.inset-0 {
   top: 0;
-  right: 0;
-  bottom: 0;
   left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
 }
-.z-50 {
-  z-index: 50;
+.spinner {
+  border: 16px solid #f3f3f3;
+  border-top: 16px solid #3498db;
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite;
+}
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 </style>

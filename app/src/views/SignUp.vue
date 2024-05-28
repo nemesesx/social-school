@@ -131,7 +131,7 @@ export default {
           this.$router.push({ name: "Home" });
         }
       } catch (error) {
-        console.log("errors:", error);
+        console.log("error:", error);
         this.errorMessage = "Something went wrong.";
 
         // console.log("error::", JSON.stringify(error));
