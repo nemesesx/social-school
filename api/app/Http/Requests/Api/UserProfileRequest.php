@@ -30,7 +30,7 @@ class UserProfileRequest extends FormRequest
             ],
             'bio' => [
                 'nullable',
-                'image',
+                'string',
             ],
             'name' => [
                 'required',
