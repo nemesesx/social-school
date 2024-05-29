@@ -1,5 +1,5 @@
 <template>
-  <main class="w-screen">
+  <main class="w-screen tariq">
     <div class="container">
       <Sidebar />
       <div class="middle">
@@ -32,3 +32,9 @@ export default {
   },
 };
 </script>
+
+<style>
+.tariq {
+  height: calc(100vh - 170px);
+}
+</style>

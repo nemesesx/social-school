@@ -89,7 +89,9 @@ export default {
   background-color: white;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
-  width: 200px;
+  width: 350px;
+  right: 10vw;
+  top: 20px;
 }
 
 .dropdown-item {

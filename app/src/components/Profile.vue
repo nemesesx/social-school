@@ -169,9 +169,11 @@
         </li>
       </ul>
       <Users v-if="isAdmin && activeTab === 'users'" />
-      <AdminPosts v-if="isAdmin && activeTab === 'posts'" />
-      <!-- <Post :isAdmin="isAdmin" :post="post" v-if="activeTab === 'posts'" />
-      <AdminPost :isAdmin="true" :post="post" v-if="isAdmin && activeTab === 'posts'" /> -->
+      <!-- <AdminPosts v-if="isAdmin && activeTab === 'posts'" /> -->
+      <!-- <Post :isAdmin="isAdmin" :post="post" v-if="activeTab === 'posts'" /> -->
+      <div class="flex flex-col">
+        <AdminPost :isAdmin="true" :post="post" v-if="isAdmin && activeTab === 'posts'" />
+      </div>
       <UserProfile v-if="activeTab === 'profile'" />
     </div>
   </div>
