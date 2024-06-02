@@ -23,19 +23,16 @@
 
       <div class="action-buttons">
         <div class="interaction-buttons ml-2">
-          <span v-if="isAdmin" @click="deletePost" :key="liked">
-            <i class="pi pi-trash" style=""></i>
+          <span v-if="isAdmin" @click="deletePost(post.id)" :key="liked">
+            <i class="pi pi-trash cursor-pointer" style="color: red"></i>
           </span>
 
           <span v-if="!isAdmin" @click="onLikeClick" :key="liked">
             <i class="pi" :class="isLiked ? 'pi-heart-fill' : 'pi-heart'" style=""></i>
           </span>
 
-          <span @click="toggleCreateCommentVisible">
-            <i
-              class="pi"
-              :class="createCommentVisible ? 'pi-comment' : 'pi-comments'"
-            ></i>
+          <span v-if="!isAdmin" @click="toggleCreateCommentVisible">
+            <i class="pi" :class="createCommentVisible ? 'pi-comment' : 'pi-comments'"></i>
           </span>
         </div>
       </div>
@@ -57,120 +54,119 @@
         </p>
       </div>
 
-      <div
-        v-if="post?.comments?.length"
-        class="comments text-muted"
-        @click="toggleCommentsVisible"
-      >
+      <div v-if="post?.comments?.length" class="comments text-muted" @click="toggleCommentsVisible">
         View all {{ post?.comments?.length }} comments
       </div>
 
       <CreateComment v-if="createCommentVisible && !isAdmin" :postId="post.id" />
 
-      <Comments v-if="commentsVisible" :comments="post.comments"></Comments>
+      <Comments v-if="commentsVisible" :comments="post.comments" :isAdmin="isAdmin"></Comments>
     </div>
   </div>
 </template>
 
 <script>
-import { usePostStore } from "../stores/postStore";
-import { useAuthStore } from "../stores/authStore";
-import Comments from "../components/Comments.vue";
-import CreateComment from "../components/CreateComment.vue";
+import { usePostStore } from '../stores/postStore'
+import { useAuthStore } from '../stores/authStore'
+import { useAdminStore } from '../stores/adminStore'
+import Comments from '../components/Comments.vue'
+import CreateComment from '../components/CreateComment.vue'
 
-import PubSub from "pubsub-js";
+import PubSub from 'pubsub-js'
 export default {
-  name: "Post",
+  name: 'Post',
   props: {
     post: Object,
-    isAdmin: Boolean,
+    isAdmin: Boolean
   },
 
   components: {
     Comments,
-    CreateComment,
+    CreateComment
   },
 
   data() {
     return {
       commentsVisible: false,
       createCommentVisible: false,
-      newComment: "",
+      newComment: '',
       postStore: usePostStore(),
       authStore: useAuthStore(),
+      adminStore: useAdminStore(),
       userId: this.authStore?.user?.id,
       postData: JSON.parse(JSON.stringify(this.post)),
-      liked: this.isLiked,
-    };
+      liked: this.isLiked
+    }
   },
 
   mounted() {
     // console.log("post:", this.postData);
     this.liked = this.postData?.likes?.some((user) => {
-      return +user?.id == +this.authStore?.user?.id;
-    });
+      return +user?.id == +this.authStore?.user?.id
+    })
   },
 
   computed: {
     isLiked() {
-      return this.liked;
-    },
+      return this.liked
+    }
   },
   methods: {
     async onLikeClick() {
       if (this.liked) {
-        this.unlikePost();
+        this.unlikePost()
       } else {
-        this.likePost();
+        this.likePost()
       }
 
-      PubSub.publish("updateRecord");
+      PubSub.publish('updateRecord')
     },
     async likePost() {
-      await this.postStore.likePost(this.post?.id);
+      await this.postStore.likePost(this.post?.id)
 
       // this.postData = this.postData?.likes?.push(this.authStore?.user);
-      this.liked = true;
+      this.liked = true
     },
 
     async unlikePost() {
-      await this.postStore.unLikePost(this.post?.id);
+      await this.postStore.unLikePost(this.post?.id)
       // this.postData = this.postData?.likes?.filter((user) => user?.id !== this.userId);
-      this.liked = false;
+      this.liked = false
     },
 
     toggleCommentsVisible() {
-      this.commentsVisible = !this.commentsVisible;
+      this.commentsVisible = !this.commentsVisible
     },
 
     toggleCreateCommentVisible() {
-      this.createCommentVisible = !this.createCommentVisible;
+      this.createCommentVisible = !this.createCommentVisible
     },
 
     async addComment() {
-      if (this.newComment.trim() === "") {
-        return;
+      if (this.newComment.trim() === '') {
+        return
       }
 
-      await this.postStore.addComment(this.post?.id, { comment: this.newComment });
+      await this.postStore.addComment(this.post?.id, { comment: this.newComment })
       // this.post.comments.push({
       //   id: this.post.comments.length + 1,
       //   text: this.newComment,
       //   user: "Anonymous", // You can set the user dynamically here
       // });
-      this.newComment = "";
+      this.newComment = ''
     },
 
     editPost() {
-      this.$emit("editPost", this.post);
+      this.$emit('editPost', this.post)
     },
 
-    async deletePost() {
+    async deletePost(id) {
       // this.$emit("deletePost", this.post?.id);
-      await this.adminStore.deletePost(this.post?.id);
-    },
-  },
-};
+      await this.adminStore.removePost(id)
+      PubSub.publish('updateRecord')
+    }
+  }
+}
 </script>
 
 <style scoped>

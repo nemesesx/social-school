@@ -32,7 +32,7 @@
           <div
             v-if="isDropdownVisible"
             x-show="dropdownOpen"
-            class="absolute right-0 mt-4 flex w-62.5 flex-col rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark"
+            class="absolute dropdown right-0 mt-4 flex w-62.5 flex-col rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark"
           >
             <ul
               class="flex flex-col gap-5 border-b border-stroke px-6 py-7.5 dark:border-strokedark"
@@ -114,17 +114,17 @@
   </nav>
 </template>
 <script>
-import { computed } from "vue";
-import { useRoute, useRouter } from "vue-router";
-import { useAuthStore } from "../stores/authStore";
-import Menubar from "primevue/menubar";
-import UserSearch from "../components//UserSearch.vue";
-import debounce from "lodash/debounce";
+import { computed } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { useAuthStore } from '../stores/authStore'
+import Menubar from 'primevue/menubar'
+import UserSearch from '../components//UserSearch.vue'
+import debounce from 'lodash/debounce'
 export default {
-  name: "Navbar",
+  name: 'Navbar',
 
   components: {
-    UserSearch,
+    UserSearch
   },
   data() {
     return {
@@ -133,66 +133,67 @@ export default {
       isDropdownVisible: false,
       authStore: useAuthStore(),
       searchQuery: null,
-      authStore: useAuthStore(),
-    };
+      authStore: useAuthStore()
+    }
   },
 
   computed: {
     isLoggedIn() {
-      return this.authStore.token !== null;
-    },
+      return this.authStore.token !== null
+    }
   },
 
   methods: {
     goToHomePage() {
-      this.$router.push({ name: "Home" });
+      this.$router.push({ name: 'Home' })
     },
     onCross() {
-      this.toggleIsOpen();
+      this.toggleIsOpen()
     },
     toggleIsOpen() {
-      this.isOpen = !this.isOpen;
+      this.isOpen = !this.isOpen
     },
     async searchUsers(searchQuery) {
-      await this.authStore.searchUsers(searchQuery);
-      this.searchResults = this.authStore?.searchResults || [];
-      this.isOpen = true;
-      console.log("searchResults:", this.searchResults);
+      await this.authStore.searchUsers(searchQuery)
+      this.searchResults = this.authStore?.searchResults || []
+      this.isOpen = true
+      console.log('searchResults:', this.searchResults)
     },
     onInput() {
-      this.debouncedSearch(this.searchQuery);
+      this.debouncedSearch(this.searchQuery)
     },
     debouncedSearch: debounce(function (searchQuery) {
-      if (searchQuery?.trim() === "") {
-        this.searchResults = [];
-        return;
+      if (searchQuery?.trim() === '') {
+        this.searchResults = []
+        return
       }
-      this.searchUsers(searchQuery);
+      this.searchUsers(searchQuery)
     }, 300),
 
     toggleDropdown() {
-      this.isDropdownVisible = !this.isDropdownVisible;
+      this.isDropdownVisible = !this.isDropdownVisible
     },
 
     async logout() {
-      this.$router.push({ name: "Signin" });
-      await this.authStore.logout();
+      this.$router.push({ name: 'Signin' })
+      await this.authStore.logout()
     },
 
     handleNotificationClick() {
       // Handle notification click logic
-      console.log("Notification clicked");
+      console.log('Notification clicked')
     },
 
     handleProfileClick() {
-      this.toggleDropdown();
-      this.$router.push({ name: "Profile" });
-    },
-  },
-};
+      this.toggleDropdown()
+      this.$router.push({ name: 'Profile' })
+    }
+  }
+}
 </script>
 
 <style>
-.logo {
+.dropdown {
+  top: 50px;
 }
 </style>

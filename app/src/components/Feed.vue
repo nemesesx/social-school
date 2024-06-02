@@ -2,47 +2,56 @@
   <!-- <div class="feed-container"> -->
   <CreatePost @postCreated="fetchPosts" />
   <Spinner />
-  <PostsList @updateRecord="onUpdateRecord" :posts="posts" />
+  <PostsList @updateRecord="onUpdateRecord" :posts="posts" :isAdmin="isAdmin" />
   <!-- </div> -->
 </template>
 
 <script>
-import CreatePost from "../components/CreatePost.vue";
-import PostsList from "../components/PostsList.vue";
-import { usePostStore } from "../stores/postStore";
-import Spinner from "../components/Spinner.vue";
-import PubSub from "pubsub-js";
-import { useToast } from "vue-toastification";
-import Swal from "sweetalert2";
+import CreatePost from '../components/CreatePost.vue'
+import PostsList from '../components/PostsList.vue'
+import { usePostStore } from '../stores/postStore'
+import { useAuthStore } from '../stores/authStore'
+import { useAdminStore } from '../stores/adminStore'
+import Spinner from '../components/Spinner.vue'
+import PubSub from 'pubsub-js'
+import { useToast } from 'vue-toastification'
+import Swal from 'sweetalert2'
 export default {
-  name: "Feed",
+  name: 'Feed',
   components: {
     CreatePost,
     PostsList,
-    Spinner,
+    Spinner
   },
 
   data() {
     return {
       posts: [],
       postStore: usePostStore(),
-      toast: useToast(),
-    };
+      authStore: useAuthStore(),
+      adminStore: useAdminStore(),
+      toast: useToast()
+    }
   },
 
   mounted() {
-    PubSub.subscribe("updateRecord", this.onUpdateRecord);
+    PubSub.subscribe('updateRecord', this.onUpdateRecord)
   },
 
   unmounted() {
-    PubSub.unsubscribe("updateRecord");
+    PubSub.unsubscribe('updateRecord')
   },
   created() {
-    this.fetchPosts();
+    this.fetchPosts()
+    this.getUserProfile()
   },
   methods: {
+    async getUserProfile() {
+      await this.authStore.getUserProfile()
+      this.user = this.authStore?.user
+    },
     onUpdateRecord() {
-      this.fetchPosts();
+      this.fetchPosts()
       // this.toast.success("Comment added successfully");
       // Swal.fire({
       //   icon: "success",
@@ -54,11 +63,27 @@ export default {
 
     async fetchPosts() {
       // await postStore.fetchNewsFeed();
-      await this.postStore.fetchNewsFeed();
-      this.posts = this.postStore.newsFeed;
+
+      if (this.isAdmin) {
+        await this, this.fetchAllPosts()
+        return
+      }
+      await this.postStore.fetchNewsFeed()
+      this.posts = this.postStore.newsFeed
     },
+
+    async fetchAllPosts() {
+      await this.adminStore.getPosts()
+      this.posts = this.adminStore.posts
+    }
   },
-};
+
+  computed: {
+    isAdmin() {
+      return this.authStore?.isAdmin()
+    }
+  }
+}
 </script>
 
 <style>

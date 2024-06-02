@@ -60,13 +60,13 @@
           class="flex flex-col items-center justify-center gap-1 border-r border-stroke px-4 dark:border-strokedark xsm:flex-row"
         >
           <span class="font-semibold text-black dark:text-white">{{
-            user?.followers?.length || "0"
+            user?.followers?.length || '0'
           }}</span>
           <span class="text-sm">Followers</span>
         </div>
         <div class="flex flex-col items-center justify-center gap-1 px-4 xsm:flex-row">
           <span class="font-semibold text-black dark:text-white">{{
-            user?.follows?.length || "0"
+            user?.follows?.length || '0'
           }}</span>
           <span class="text-sm">Following</span>
         </div>
@@ -75,7 +75,7 @@
       <div class="mx-auto max-w-180">
         <h4 class="font-medium text-black dark:text-white">About Me</h4>
         <p class="mt-4.5 text-sm font-normal">
-          {{ user?.bio || "-" }}
+          {{ user?.bio || '-' }}
         </p>
       </div>
     </div>
@@ -95,7 +95,7 @@
               'inline-flex items-center px-4 py-3 rounded-lg w-full',
               activeTab === 'profile'
                 ? 'text-white bg-blue-700 dark:bg-blue-600'
-                : 'text-gray-500 bg-gray-50 dark:bg-gray-800',
+                : 'text-gray-500 bg-gray-50 dark:bg-gray-800'
             ]"
             aria-current="page"
           >
@@ -116,7 +116,7 @@
         <!-- End Profile -->
 
         <!-- start Dashboard -->
-        <li>
+        <li v-if="isAdmin">
           <a
             href="#"
             @click="setActiveTab('users')"
@@ -124,7 +124,7 @@
               'inline-flex items-center px-4 py-3 rounded-lg w-full',
               activeTab === 'users'
                 ? 'text-white bg-blue-700 dark:bg-blue-600'
-                : 'text-gray-500 bg-gray-50 dark:bg-gray-800',
+                : 'text-gray-500 bg-gray-50 dark:bg-gray-800'
             ]"
           >
             <svg
@@ -142,7 +142,7 @@
           </a>
         </li>
 
-        <li>
+        <!-- <li>
           <a
             href="#"
             @click="setActiveTab('posts')"
@@ -150,7 +150,7 @@
               'inline-flex items-center px-4 py-3 rounded-lg w-full',
               activeTab === 'posts'
                 ? 'text-white bg-blue-700 dark:bg-blue-600'
-                : 'text-gray-500 bg-gray-50 dark:bg-gray-800',
+                : 'text-gray-500 bg-gray-50 dark:bg-gray-800'
             ]"
           >
             <svg
@@ -166,7 +166,7 @@
             </svg>
             Posts
           </a>
-        </li>
+        </li> -->
       </ul>
       <Users v-if="isAdmin && activeTab === 'users'" />
       <!-- <AdminPosts v-if="isAdmin && activeTab === 'posts'" /> -->
@@ -180,14 +180,14 @@
 </template>
 
 <script>
-import { useAuthStore } from "../stores/authStore";
-import { usePostStore } from "../stores/postStore";
-import { useAdminStore } from "../stores/adminStore";
-import Users from "../components/Users.vue";
-import AdminPosts from "../components/AdminPosts.vue";
-import AdminPost from "../components/AdminPosts.vue";
-import UserProfile from "../components/UserProfile.vue";
-import PubSub from "pubsub-js";
+import { useAuthStore } from '../stores/authStore'
+import { usePostStore } from '../stores/postStore'
+import { useAdminStore } from '../stores/adminStore'
+import Users from '../components/Users.vue'
+import AdminPosts from '../components/AdminPosts.vue'
+import AdminPost from '../components/AdminPosts.vue'
+import UserProfile from '../components/UserProfile.vue'
+import PubSub from 'pubsub-js'
 export default {
   data() {
     return {
@@ -195,32 +195,32 @@ export default {
       authStore: useAuthStore(),
       postStore: usePostStore(),
       adminStore: useAdminStore(),
-      activeTab: "profile",
+      activeTab: 'profile',
       posts: null,
-      post: null,
-    };
+      post: null
+    }
   },
 
   created() {
-    this.getUserProfile();
-    this.getPosts();
+    this.getUserProfile()
+    // this.getPosts();
   },
 
   components: {
     Users,
     AdminPost,
-    UserProfile,
+    UserProfile
   },
   mounted() {
-    PubSub.subscribe("updateRecord", this.onUpdateRecord);
+    PubSub.subscribe('updateRecord', this.onUpdateRecord)
   },
 
   unmounted() {
-    PubSub.unsubscribe("updateRecord");
+    PubSub.unsubscribe('updateRecord')
   },
   methods: {
     onUpdateRecord() {
-      this.getUserProfile();
+      this.getUserProfile()
       // this.toast.success("Comment added successfully");
       // Swal.fire({
       //   icon: "success",
@@ -230,40 +230,40 @@ export default {
       // });
     },
     setActiveTab(tab) {
-      this.activeTab = tab;
+      this.activeTab = tab
     },
 
     async getUserProfile() {
-      await this.authStore.getUserProfile();
-      this.user = this.authStore?.user;
+      await this.authStore.getUserProfile()
+      this.user = this.authStore?.user
     },
 
     async getPosts() {
-      await this.adminStore.getPosts();
-      this.posts = this.adminStore?.posts;
-      this.post = this.posts[0];
+      await this.adminStore.getPosts()
+      this.posts = this.adminStore?.posts
+      this.post = this.posts[0]
 
-      console.log("post:", this.posts);
+      console.log('post:', this.posts)
     },
 
     async login() {
       await this.authStore.login({
         email: this.email,
-        password: this.password,
-      });
+        password: this.password
+      })
       if (authStore.token) {
-        this.$router.push({ name: "" });
+        this.$router.push({ name: '' })
       }
-    },
+    }
   },
 
   computed: {
     isAdmin() {
-      return this.authStore.user?.type === "ADMIN";
+      return this.authStore.user?.type === 'ADMIN'
     },
     totalPosts() {
-      return this.postStore?.posts?.length ?? 0;
-    },
-  },
-};
+      return this.postStore?.posts?.length ?? 0
+    }
+  }
+}
 </script>

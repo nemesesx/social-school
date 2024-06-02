@@ -35,11 +35,11 @@ export const useAdminStore = defineStore('admin', {
       console.log('posts:', this.posts)
     },
 
-    async removePost() {
+    async removePost(id) {
       await axios.delete(`${baseURL}/api/admin/post/remove/id=${id}`)
     },
 
-    async removeComment() {
+    async removeComment(id) {
       await axios.delete(`${baseURL}/api/admin/comment/remove/id=${id}`)
     }
   }

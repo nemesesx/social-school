@@ -18,13 +18,22 @@
 
             <div class="comment-box">
               <div class="comment-head">
-                <h6 class="comment-name by-author">
-                  <a href="#">{{ comment.commented_by?.name }}</a>
-                </h6>
-                <span>{{ comment?.created_at }}</span>
-                <i class="fa fa-reply"></i>
-                <i class="fa fa-heart"></i>
+                <div>
+                  <h6 class="comment-name by-author">
+                    <a href="#">{{ comment.commented_by?.name }}</a>
+                  </h6>
+                  <span>{{ comment?.created_at }}</span>
+                </div>
+
+                <!-- <i class="fa fa-reply"></i>
+                <i class="fa fa-heart"></i> -->
+                <div>
+                  <span v-if="isAdmin" @click="deleteComment(comment.id)">
+                    <i class="pi pi-trash right-0 cursor-pointer" style="color: red"></i>
+                  </span>
+                </div>
               </div>
+
               <div class="comment-content">
                 {{ comment?.comment }}
               </div>
@@ -37,23 +46,33 @@
 </template>
 
 <script>
-import { usePostStore } from "../stores/postStore";
+import { usePostStore } from '../stores/postStore'
+import { useAdminStore } from '../stores/adminStore'
+import PubSub from 'pubsub-js'
 
 export default {
-  name: "Comments",
+  name: 'Comments',
   props: {
     comments: Array,
+    isAdmin: Boolean
   },
 
   data() {
-    return {};
+    return {
+      adminStore: useAdminStore()
+    }
   },
 
   created() {},
 
-  methods: {},
-  components: {},
-};
+  methods: {
+    async deleteComment(id) {
+      await this.adminStore.removeComment(id)
+      PubSub.publish('updateRecord')
+    }
+  },
+  components: {}
+}
 </script>
 
 <style scoped>
@@ -75,7 +94,7 @@ ul {
 }
 
 body {
-  font-family: "Roboto", Arial, Helvetica, Sans-serif, Verdana;
+  font-family: 'Roboto', Arial, Helvetica, Sans-serif, Verdana;
   background: #dee1e3;
 }
 
@@ -101,7 +120,7 @@ body {
 }
 
 .comments-list:before {
-  content: "";
+  content: '';
   width: 2px;
   height: 100%;
   background: #c7cacb;
@@ -111,7 +130,7 @@ body {
 }
 
 .comments-list:after {
-  content: "";
+  content: '';
   position: absolute;
   background: #c7cacb;
   bottom: 0;
@@ -129,7 +148,7 @@ body {
   display: none;
 }
 .reply-list li:before {
-  content: "";
+  content: '';
   width: 60px;
   height: 2px;
   background: #c7cacb;
@@ -145,7 +164,7 @@ body {
 }
 
 .comments-list li:after {
-  content: "";
+  content: '';
   display: block;
   clear: both;
   height: 0;
@@ -185,7 +204,7 @@ body {
 }
 
 .comment-main-level:after {
-  content: "";
+  content: '';
   width: 0;
   height: 0;
   display: block;
@@ -203,7 +222,7 @@ body {
 
 .comments-list .comment-box:before,
 .comments-list .comment-box:after {
-  content: "";
+  content: '';
   height: 0;
   width: 0;
   position: absolute;
@@ -285,7 +304,7 @@ body {
   color: #03658c;
 }
 .comment-box .comment-name.by-author:after {
-  content: "autor";
+  content: 'autor';
   background: #03658c;
   color: #fff;
   font-size: 12px;

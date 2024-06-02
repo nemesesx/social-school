@@ -1,25 +1,26 @@
 <template>
   <template v-if="posts?.length">
     <div v-for="post in posts" :key="post.id + posts.length" class="post-item">
-      <Post @updateRecord="onUpdateRecord" :post="post" />
+      <Post @updateRecord="onUpdateRecord" :post="post" :isAdmin="isAdmin" />
     </div>
   </template>
   <RecordNotFound v-else />
 </template>
 
 <script>
-import RecordNotFound from "../components/RecordNotFound.vue";
-import Post from "../components/Post.vue";
-import { usePostStore } from "../stores/postStore";
+import RecordNotFound from '../components/RecordNotFound.vue'
+import Post from '../components/Post.vue'
+import { usePostStore } from '../stores/postStore'
 
 export default {
-  name: "PostList",
+  name: 'PostList',
   props: {
     posts: Array,
+    isAdmin: Boolean
   },
 
   data() {
-    return {};
+    return {}
   },
 
   created() {},
@@ -36,7 +37,7 @@ export default {
   },
   components: {
     Post,
-    RecordNotFound,
-  },
-};
+    RecordNotFound
+  }
+}
 </script>

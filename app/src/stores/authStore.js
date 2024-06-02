@@ -32,11 +32,16 @@ export const useAuthStore = defineStore('auth', {
         this.token = response.data.authorization.token
         this.user = response.data.data
         localStorage.setItem('token', this.token)
+        localStorage.setItem('isAdmin', this.user.type)
         console.log('res:', response.data.data)
       } catch (error) {
         const errorMessage = error.response?.data?.message
         throw new Error(errorMessage)
       }
+    },
+
+    isAdmin() {
+      return localStorage.getItem('isAdmin') === 'ADMIN'
     },
     async fetchUser() {
       // if (this.token) {
