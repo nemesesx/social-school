@@ -12,7 +12,7 @@
           src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg"
           alt="logo"
         />
-        Instagram
+        Social School
       </a>
       <div
         class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700"
@@ -94,46 +94,46 @@
 </template>
 
 <script>
-import { useAuthStore } from "../stores/authStore";
+import { useAuthStore } from '../stores/authStore'
 
 export default {
   data() {
     return {
-      email: "",
-      password: "",
-      error: "",
-      authStore: useAuthStore(),
-    };
+      email: '',
+      password: '',
+      error: '',
+      authStore: useAuthStore()
+    }
   },
   methods: {
     extractStringFromArray(array) {
       if (Array.isArray(array) && array.length > 0) {
-        return array[0];
+        return array[0]
       }
-      return "";
+      return ''
     },
     async login() {
       if (!this.email || !this.password) {
-        this.error = "Valid Email and password is required";
-        return;
+        this.error = 'Valid Email and password is required'
+        return
       }
 
       try {
         const res = await this.authStore.login({
           email: this.email,
-          password: this.password,
-        });
+          password: this.password
+        })
 
         if (this.authStore.token) {
-          this.$router.push({ name: "Home" });
+          this.$router.push({ name: 'Home' })
         }
 
         // this.error = this.authStore?.error;
       } catch (error) {
-        this.error = error;
-        console.log("error::", error);
+        this.error = error
+        console.log('error::', error)
       }
-    },
-  },
-};
+    }
+  }
+}
 </script>

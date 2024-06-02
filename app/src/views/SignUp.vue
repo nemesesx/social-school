@@ -12,7 +12,7 @@
           src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg"
           alt="logo"
         />
-        Instagram
+        Social School
       </a>
       <div
         class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700"
@@ -54,7 +54,7 @@
                 aria-describedby="username-help"
                 class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               />
-              {{ errors["name"] }}
+              {{ errors['name'] }}
             </div>
             <div>
               <label
@@ -64,6 +64,7 @@
               >
               <InputText
                 required
+                type="password"
                 id="password"
                 v-model="password"
                 aria-describedby="username-help"
@@ -101,38 +102,38 @@
 </template>
 
 <script>
-import { useAuthStore } from "../stores/authStore";
+import { useAuthStore } from '../stores/authStore'
 
 export default {
   data() {
     return {
-      name: "",
-      email: "",
-      password: "",
-      errors: "",
-      errorMessage: "",
-    };
+      name: '',
+      email: '',
+      password: '',
+      errors: '',
+      errorMessage: ''
+    }
   },
   methods: {
     async register() {
       try {
         if (!this.name || !this.email || !this.password) {
-          this.errorMessage = "All fields are required.";
-          return;
+          this.errorMessage = 'All fields are required.'
+          return
         }
 
-        const authStore = useAuthStore();
+        const authStore = useAuthStore()
         await authStore.register({
           name: this.name,
           email: this.email,
-          password: this.password,
-        });
+          password: this.password
+        })
         if (authStore.token) {
-          this.$router.push({ name: "Home" });
+          this.$router.push({ name: 'Home' })
         }
       } catch (error) {
-        console.log("error:", error);
-        this.errorMessage = "Something went wrong.";
+        console.log('error:', error)
+        this.errorMessage = 'Something went wrong.'
 
         // console.log("error::", JSON.stringify(error));
       }
@@ -140,10 +141,10 @@ export default {
 
     extractStringFromArray(array) {
       if (Array.isArray(array) && array.length > 0) {
-        return array[0];
+        return array[0]
       }
-      return "";
-    },
-  },
-};
+      return ''
+    }
+  }
+}
 </script>
